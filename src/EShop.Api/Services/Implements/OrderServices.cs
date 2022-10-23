@@ -5,33 +5,31 @@ namespace EShop.Api.Services.Implements
 {
     public class OrderServices : IOrderServices
     {
+        private readonly EShopDbContext _dbContext;
+
+        public OrderServices(EShopDbContext eShopDbContext)
+        {
+            _dbContext = eShopDbContext;
+        }
+
         public bool Add(Order order)
         {
-            if (order == null) throw new ArgumentNullException(nameof(order));
-            if (order.BuyerName == null) throw new ArgumentNullException(nameof(order.BuyerName));
-            if (order.PuchaseOrderNumber == null) throw new ArgumentNullException(nameof(order.PuchaseOrderNumber));
-            if (order.OrderAmount <= 0) throw new ArgumentOutOfRangeException(nameof(order.OrderAmount));
-            if (order.BillingZipCode == null) throw new ArgumentNullException(nameof(order.BillingZipCode));
-
-            using var db = new EShopDbContext();
-
-            bool isExist = db.Orders.Any(m => m.PuchaseOrderNumber == order.PuchaseOrderNumber);
+            bool isExist = _dbContext.Orders.Any(m => m.PuchaseOrderNumber == order.PuchaseOrderNumber);
             if (isExist)
                 return false;
-            db.Orders.Add(order);
-            db.SaveChanges();
+            _dbContext.Orders.Add(order);
+            _dbContext.SaveChanges();
             return true;
         }
 
         public IEnumerable<Order> Get(OrderFilter filter)
         {
-            using var db = new EShopDbContext();
             if (filter == null)
             {
-                return db.Orders.ToList();
+                return _dbContext.Orders.ToList();
             }
 
-            var query = db.Orders.AsQueryable();
+            var query = _dbContext.Orders.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filter.PuchaseOrderNum))
             {

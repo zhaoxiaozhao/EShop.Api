@@ -5,12 +5,18 @@ namespace EShop.Api.Entities
     public class Order
     {
         public int Id { get; set; }
+
         [Required]
-        public string PuchaseOrderNumber { get; set; }
+        [MaxLength(50)]
+        public string PuchaseOrderNumber { get; set; } = string.Empty;
+
         [Required]
-        public string BuyerName { get; set; }
+        [MaxLength(10)]
+        public string BuyerName { get; set; } = string.Empty;
+
         [Required]
-        public string BillingZipCode { get; set; }
+        [MaxLength(50)]
+        public string BillingZipCode { get; set; } = string.Empty;
         [Required]
         public decimal OrderAmount { get; set; }
 

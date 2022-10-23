@@ -30,28 +30,26 @@ namespace EShop.Api.Controllers
         [Route("api/postorder")]
         public IActionResult Post([FromBody] Order order)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                bool result = _orderServices.Add(order);
-
-                if (result)
-                {
-                    return Created("", result);
-                }
-                else
-                {
-                    return NoContent();
-                }
+                return BadRequest(ModelState);
             }
-            catch(Exception ex)
+
+            bool result = _orderServices.Add(order);
+
+            if (result)
             {
-                return BadRequest(ex);
+                return Created("", "True");
+            }
+            else
+            {
+                return NoContent();
             }
         }
 
         [HttpGet]
         [Route("api/getorders")]
-        public IEnumerable<Order> GetOrders(string? code, string? buyerName, string? PuchaseOrderNumber)
+        public IEnumerable<Order> GetOrders(string code, string buyerName, string PuchaseOrderNumber)
         {
             var filter = new OrderFilter()
             {

@@ -1,5 +1,7 @@
 using EShop.Api.Services;
 using EShop.Api.Services.Implements;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace EShop.Api
 {
@@ -17,6 +19,11 @@ namespace EShop.Api
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<EShopDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration["ConnectionString"]);
+            });
 
             builder.Services.AddScoped<IOrderServices, OrderServices>();
 
