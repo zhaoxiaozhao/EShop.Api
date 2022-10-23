@@ -33,8 +33,7 @@ namespace EShop.Api.Tests
                     var scopedServices = scope.ServiceProvider;
                     var db = scopedServices.GetRequiredService<EShopDbContext>();
                     var logger = scopedServices
-                        .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
-                    //db.Database.EnsureDeleted();   
+                        .GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>(); 
                     db.Database.EnsureCreated();
 
                     try
